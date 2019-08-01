@@ -1,4 +1,4 @@
-import { ProtractorBrowser, protractor, by, ExpectedConditions, browser, until, element } from "protractor";
+import { ProtractorBrowser, protractor, by, ExpectedConditions, browser, until, element, ElementArrayFinder } from "protractor";
 import {async} from "q";
 import {ActionSupport} from "../core_function/actionSupport/actionSupport"
 
@@ -13,6 +13,7 @@ export class LoginLogout{
     dropDownProfile: string
     logoutBtn: string
     loginTitle: string
+    selectRole: string
 
     constructor(browser: ProtractorBrowser){
         this.userName = "//input[@ng-model='username']"
@@ -26,6 +27,7 @@ export class LoginLogout{
         this.dropDownProfile = "//span[@ng-click='clickToShowSelectRole()']"
         this.logoutBtn = "//a[@ng-click='logOut()']"
         this.loginTitle = "//legend[text()='Login']"
+        this.selectRole = "//div[@ng-click='selectRole()']"
     }
 
     async LoginUser(username: string, password: string){
@@ -67,5 +69,25 @@ export class LoginLogout{
         await browser.sleep(2000)
         await expect(element(by.xpath(this.loginTitle)).getText()).toContain("Login")
         console.log("User logout successfully")
+    }
+    
+    async SelectRole(){
+        let actionSupport = new ActionSupport(browser)
+        //await actionSupport.clickOnElement(this.dropDownProfile)
+        await actionSupport.clickOnElement(this.selectRole)
+
+        // let tets = document.getElementsByClassName("options");
+        // console.log(tets);
+        // numbers.forEach(element => {
+        //     console.log(element.getText());
+        // });
+        // for(var i in numbers){
+        //     console.log(numbers[i].getText());
+        // }
+
+        var history = element(by.className('options'));
+        console.log(history);
+        //console.log(history.last().getText());
+
     }
 }
