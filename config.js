@@ -5,7 +5,7 @@ exports.config = {
     framework: 'jasmine',
     // The address of a running selenium server.
     seleniumAddress: 'http://localhost:4444/wd/hub',
-    specs: ['Testcases/Login.ts'],
+    specs: ['Testcases/Login-Logout.ts'],
     // specs: ['Login.ts'],
     //run directly with browser driver without using webdriver manager
     directConnect: true,

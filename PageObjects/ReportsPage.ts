@@ -1,9 +1,11 @@
 import { ProtractorBrowser, protractor, by, ExpectedConditions, browser, until } from "protractor";
 import {async} from "q";
 import {ActionSupport} from "../core_function/actionSupport/actionSupport"
+import { LoginLogout } from "./LoginLogoutPage";
 
-export class Login{
+export class Report{
     //Variables and Contructor
+    
     userName: string
     passWord: string
     userNameError_Mes: string
@@ -40,15 +42,15 @@ export class Login{
         await expect(fn).toContain(fullname)
     }
 
-    async loginWithoutUsername(errormessage: string){
+    async LoginWithoutUsername(errormessage: string){
         await expect(browser.element(by.xpath(this.userNameError_Mes)).getText()).toContain(errormessage)
     }
 
-    async loginWithoutPassword(errormessage: string){
+    async LoginWithoutPassword(errormessage: string){
         await expect(browser.element(by.xpath(this.passWordError_Mes)).getText()).toContain(errormessage)
     }
     
-    async loginWithUnexistedUser(alerttext: string){
+    async LoginWithUnexistedUser(alerttext: string){
         let actionSupport = new ActionSupport(browser)
         let alertText = await actionSupport.getAlertObject()
         await expect(alertText.getText()).toContain(alerttext)
