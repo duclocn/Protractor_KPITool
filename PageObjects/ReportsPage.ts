@@ -1,58 +1,59 @@
 import { ProtractorBrowser, protractor, by, ExpectedConditions, browser, until } from "protractor";
 import {async} from "q";
-import {ActionSupport} from "../core_function/actionSupport/actionSupport"
+import { ActionSupport } from '../core_function/actionSupport/actionSupport';
 import { LoginLogout } from "./LoginLogoutPage";
 
-export class Report{
+export class Reports{
     //Variables and Contructor
-    
-    userName: string
-    passWord: string
-    userNameError_Mes: string
-    passWordError_Mes: string 
-    loginBtn: string
-    fullName: string
     dropDownProfile: string
+    selectRoleDropdow: string
+    //selectRole: string
+    projectKPI: string
+    othersRoleKPI: string
+    startDate: string
+    endDate: string
 
     constructor(browser: ProtractorBrowser){
-        this.userName = "//input[@ng-model='username']"
-        this.passWord = "//input[@ng-model='password']"
-        //this.userNameError_Mes = "//span[contains(text(),'Username is required')]"
-        //this.passWordError_Mes = "//span[contains(text(),'Password is required')]"
-        this.userNameError_Mes = "//span[@ng-show='loginForm.username.$error.required']"
-        this.passWordError_Mes = "//span[@ng-show='loginForm.password.$error.required']"
-        this.loginBtn = "//input[@ng-click='login(loginForm)']"
-        this.fullName = "//div[@class='fullname ng-binding']"
         this.dropDownProfile = "//span[@ng-click='clickToShowSelectRole()']"
+        this.selectRoleDropdow = "//div[@ng-click='selectRole()']"
+        //this.selectRole = "//li[@ng-repeat='unitRole in currentUser.unitRoles']"
+        this.projectKPI = "//div[@class='col-item col-kpi p-2']"
+        this.othersRoleKPI = "//div[@class='col-item col-kpi p-2 ng-binding']"
+        this.startDate = "//input[@ng-model='dateWeekNumber.startDate']"
+        this.endDate = "//input[@ng-model='dateWeekNumber.endDate']"
     }
 
-    async LoginUser(username: string, password: string){
+    
+
+    async VerifyKPITabelName(role: string){
         let actionSupport = new ActionSupport(browser)
-        console.log("input Username: " + username)
-        await browser.element(by.xpath(this.userName)).sendKeys(username)
-        console.log("input Password: " + password)
-        await browser.element(by.xpath(this.passWord)).sendKeys(password)
-        await actionSupport.clickOnElement(this.loginBtn)
+        let KPITableName: string = ""
+        //let name = "//div[contains(text(),'Project's KPI')]"
+        if(role = "Project's KPI"){
+            KPITableName = await actionSupport.getElementText(this.projectKPI)
+        }else{
+            KPITableName = await actionSupport.getElementText(this.othersRoleKPI)
+        }
+        
+        await expect(KPITableName).toContain(role.trim())
+        console.log("KPI table name is: " + KPITableName)
     }
 
-    async VerifyProfileName(fullname: string){
+    async SelectRole(nameofrole: string){
         let actionSupport = new ActionSupport(browser)
-        await actionSupport.clickOnElement(this.dropDownProfile)
-        let fn = actionSupport.getElementText(this.fullName)
-        await expect(fn).toContain(fullname)
-    }
-
-    async LoginWithoutUsername(errormessage: string){
-        await expect(browser.element(by.xpath(this.userNameError_Mes)).getText()).toContain(errormessage)
-    }
-
-    async LoginWithoutPassword(errormessage: string){
-        await expect(browser.element(by.xpath(this.passWordError_Mes)).getText()).toContain(errormessage)
+        let roleName = "//li[contains(text(), '"+ nameofrole +"')]"
+        await actionSupport.clickOnElement(this.selectRoleDropdow)
+        await actionSupport.clickOnElement(roleName)
+        await browser.sleep(3000)
     }
     
-    async LoginWithUnexistedUser(alerttext: string){
+    async SelectProject(projectname: string){
         let actionSupport = new ActionSupport(browser)
-        let alertText = await actionSupport.getAlertObject()
-        await expect(alertText.getText()).toContain(alerttext)
+        let projectName = "//span[contains(text(),'"+ projectname +"')]"
+        
+        await actionSupport.clickOnElement(projectName)
+        await browser.sleep(3000)
+
     }
+
 }

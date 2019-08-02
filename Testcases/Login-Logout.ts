@@ -46,13 +46,13 @@ describe("Login page ", function (){
         await loginLogoutPage.LoginWithUnexistedUser("Invalid User")
     })       
 
-    fit("Login to KPI Dashboard successfully", async function(){
+    it("Login to KPI Dashboard successfully", async function(){
+        debugger;
         //automate each step
         await loginLogoutPage.LoginUser("tpphuoc", "1234")
        
         //verify result
         await loginLogoutPage.VerifyProfileName("TRẦN PHÚ PHƯỚC")
-        await loginLogoutPage.SelectRole()
     })
 
     it("Logout user", async function(){
@@ -60,8 +60,4 @@ describe("Login page ", function (){
         await loginLogoutPage.VerifyProfileName("TRẦN PHÚ PHƯỚC")
         await loginLogoutPage.Logout()
     })
-
-    // fit("dghajfda", async function(){
-    //     await loginLogoutPage.SelectRole()
-    // })
 })

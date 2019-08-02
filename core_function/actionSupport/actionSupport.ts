@@ -62,6 +62,19 @@ export class ActionSupport{
 
     async getAlertObject():Promise<Alert>{
         await this.curBrowser.wait(protractor.ExpectedConditions.alertIsPresent(), this.timeOut, "Failed to swtich the Alert")
-        return await this.curBrowser.switchTo().alert()
+        let alertPopup = await this.curBrowser.switchTo().alert()
+        return alertPopup
     }
+
+    async getElementTextFromArray(xpath: string):Promise<string>{
+        var nameOfEle: string = ""
+        //var eles = await this.curBrowser.$$(xpath)
+        var eles = await this.curBrowser.element.all(by.xpath(xpath))
+        for(let i in eles){
+            let content = await eles[i].getText().trim()
+            nameOfEle = content
+        }
+        return nameOfEle
+    }
+    
 }
