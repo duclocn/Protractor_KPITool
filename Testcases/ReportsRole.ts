@@ -4,27 +4,36 @@ import { Reports } from "../PageObjects/ReportsPage";
 
 
 //suite
-describe("Login page ", function (){
+describe("Report page ", function (){
     let loginLogoutPage: LoginLogout
     let reportsPage: Reports
 
     // testcase
     beforeEach(async function(){
         loginLogoutPage = new LoginLogout(browser)
-
+        reportsPage = new Reports(browser)
         await browser.manage().window().maximize()
         await browser.get("http://10.1.0.62/kpiauto/#/")
+        // await loginLogoutPage.LoginUser("ttthuyan","1234")
+        // await loginLogoutPage.VerifyProfileName("TRẦN THỊ THÚY AN")
         await loginLogoutPage.LoginUser("ttthuyan","1234")
         await loginLogoutPage.VerifyProfileName("TRẦN THỊ THÚY AN")
+        await loginLogoutPage.SelectRole("Project Head")
+        await loginLogoutPage.VerifyKPITabelName("Project's KPI")
     })
 
-    it("Submit the report - curent week", async function(){
+    fit("Submit the report - current week", async function(){
         //variables
 
         //Steps
-        await reportsPage.SelectRole("Project Head")
-        await reportsPage.VerifyKPITabelName("Project's KPI")
-
+        await reportsPage.SelectProject("AISIN Mobile")
+        await reportsPage.VerifySelectProjectSuccess("AISIN Mobile")
+        await browser.sleep(2000)
+        //await reportsPage.selectStartDate(28,2019)
+        //await reportsPage.selectEndDate(28,2019)
+        //await browser.sleep(3000)
+        await reportsPage.ClickStatusBtn("prev")
+        
         //expected
         
     })

@@ -2,7 +2,6 @@ import {ProtractorBrowser, browser, by, ExpectedConditions, protractor} from "pr
 import { LoginLogout } from "../PageObjects/LoginLogoutPage";
 import { async } from "q";
 
-
 //suite
 describe("Login page ", function (){
     let loginLogoutPage: LoginLogout
@@ -47,7 +46,6 @@ describe("Login page ", function (){
     })       
 
     it("Login to KPI Dashboard successfully", async function(){
-        debugger;
         //automate each step
         await loginLogoutPage.LoginUser("tpphuoc", "1234")
        
