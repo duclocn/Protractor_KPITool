@@ -29,17 +29,17 @@ describe("Report page ", function (){
         await reportsPage.SelectProject("AISIN Mobile")
         await reportsPage.VerifySelectProjectSuccess("AISIN Mobile")
         await browser.sleep(2000)
-        let sche = "Schedule"
-        //await reportsPage.selectStartDate(28,2019)
-        //await reportsPage.selectEndDate(28,2019)
-        //await browser.sleep(3000)
         await reportsPage.ClickStatusBtn("Schedule").prevVal.click()
         await reportsPage.SelectRedStatus()
         await reportsPage.ClickCommentBtn("Schedule").prevVal.click()
+        await reportsPage.AddNewIssueWithoutResolved("Issue title", "Issue Description", "Issue Action")
+        await reportsPage.ActionAddIssueCommentModal("issue", "Add & Close")
         
+        await reportsPage.ClickProjectHighlightComment("Improvements /Initiatives", "Improvements /Initiatives text")
+        await reportsPage.ClickProjectHighlightComment("Project Highlight", "Project Highlight text")
+        await reportsPage.ClickProjectHighlightComment("Other Activities", "Other Activities text")
+
         //expected
         
     })
-
-    
 })
