@@ -29,10 +29,13 @@ describe("Report page ", function (){
         await reportsPage.SelectProject("AISIN Mobile")
         await reportsPage.VerifySelectProjectSuccess("AISIN Mobile")
         await browser.sleep(2000)
+        let sche = "Schedule"
         //await reportsPage.selectStartDate(28,2019)
         //await reportsPage.selectEndDate(28,2019)
         //await browser.sleep(3000)
-        await reportsPage.ClickStatusBtn("prev")
+        await reportsPage.ClickStatusBtn("Schedule").prevVal.click()
+        await reportsPage.SelectRedStatus()
+        await reportsPage.ClickCommentBtn("Schedule").prevVal.click()
         
         //expected
         

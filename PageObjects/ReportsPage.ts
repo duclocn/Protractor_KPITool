@@ -18,6 +18,9 @@ export class Reports{
     submitCurBtn_OtherRoles_XPath: string
     submitPreBtn_OtherRoles_XPath: string
     applyBtnXPath: string
+    redStatusXPath: string
+    yellowStatusXPath: string
+    greenStatusXPath: string
     
     constructor(browser: ProtractorBrowser){
         this.dropDownProfile = "//span[@ng-click='clickToShowSelectRole()']"
@@ -35,6 +38,9 @@ export class Reports{
         this.startWeekXPath = "//input[@ng-model='dateWeekNumber.startDate']"
         this.endWeekXPath = "//input[@ng-model='dateWeekNumber.endDate']"
         this.applyBtnXPath = "//button[@ng-click='applyReport()']"
+        this.redStatusXPath = "//div[@class='color-item ng-scope bg-red']"
+        this.yellowStatusXPath = "//div[@class='color-item ng-scope bg-yellow']"
+        this.greenStatusXPath = "//div[@class='color-item ng-scope bg-green']"
     }
 
     async SelectProject(projectname: string){
@@ -118,7 +124,7 @@ export class Reports{
         console.log("Current end week is: Week " + week + ", " + year)
     }
 
-    async getCurrentWeek(curDate:Date) {
+    getCurrentWeek(curDate:Date) {
         curDate = new Date(Date.UTC(curDate.getFullYear(), curDate.getMonth(), curDate.getDate()));
         curDate.setUTCDate(curDate.getUTCDate() + 4 - (curDate.getUTCDay() || 7));
         var yearStart = new Date(Date.UTC(curDate.getUTCFullYear(), 0, 1));
@@ -126,7 +132,7 @@ export class Reports{
         return curweek
     }
 
-    async ClickStatusBtn(KPIname: string) {
+    ClickStatusBtn(KPIname: string) {
         let cur = browser.element(by.xpath("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[4]//button[@ng-click='changeChooseKPIStatus(weekReport, kpi, $event)']"))
         let prev = browser.element(by.xpath("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[3]//button[@ng-click='changeChooseKPIStatus(weekReport, kpi, $event)']"))
         
@@ -137,14 +143,38 @@ export class Reports{
         return statusKPI;
     }
 
-    async ClickCommentBtn(KPIname: string) {
+    ClickCommentBtn(KPIname: string) {
         let cur = browser.element(by.xpath("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[4]//button[@ng-click='addNewIssue(weekReport,kpi)']"))
         let prev = browser.element(by.xpath("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[3]//button[@ng-click='addNewIssue(weekReport,kpi)']"))
         let commentKPI = {
-            curval: cur,
-            prevval: prev
+            curVal: cur,
+            prevVal: prev
         }
         return commentKPI;
     }
+
+    async SelectRedStatus(){
+        let actionSupport = new ActionSupport(browser)
+
+        await actionSupport.clickOnElement(this.redStatusXPath)
+        await browser.sleep(1000)
+    }
+
+    async SelectYellowStatus(){
+        let actionSupport = new ActionSupport(browser)
+
+        await actionSupport.clickOnElement(this.yellowStatusXPath)
+        await browser.sleep(1000)
+    }
+
+    async SelectGreenStatus(){
+        let actionSupport = new ActionSupport(browser)
+
+        await actionSupport.clickOnElement(this.greenStatusXPath)
+        await browser.sleep(1000)
+    }
+
+    
+
    
 }
