@@ -1,10 +1,11 @@
 import {ProtractorBrowser, browser, by, ExpectedConditions, protractor} from "protractor"
-import { LoginLogout } from "../PageObjects/LoginLogoutPage";
-import { async } from "q";
+import { LoginLogout } from "../PageObjects/LoginLogoutPage"
+import {dataBuilder} from "../core_function/dataBuilder"
 
 //suite
 describe("Login page ", function (){
     let loginLogoutPage: LoginLogout
+    let dataArray:Array<Map<string,string>>
     // testcase
     beforeEach(async function(){
         loginLogoutPage = new LoginLogout(browser)
@@ -14,8 +15,11 @@ describe("Login page ", function (){
     })
 
     it("Login to KPI Dashboard without Username and Password", async function(){
+        dataArray = await dataBuilder.readExcel(__dirname + "\\..\\TestData\\Login.xlsx", "Login", "TC01")
+        let email = dataArray[0].get("Email")
+        let password = dataArray[0].get("Password")
         //variables
-        await loginLogoutPage.LoginUser("","")
+        await loginLogoutPage.LoginUser(email,password)
 
         //expected
         await loginLogoutPage.LoginWithoutUsername("Username is required")

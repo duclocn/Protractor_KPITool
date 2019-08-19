@@ -15,6 +15,10 @@ exports.config = {
         shardTestFiles: true,
         maxInstances: 2
     },
+    params: { // define global variable
+        user: 'ttthuyan', 
+        pass: '123456'
+    },
     // multiCapabilities: [
     //     {
     //       browserName: 'chrome',

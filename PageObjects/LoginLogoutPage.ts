@@ -54,12 +54,12 @@ export class LoginLogout{
 
     async LoginWithoutUsername(errormessage: string){
         console.log("Username error message: " + errormessage)
-        await expect(browser.element(by.xpath(this.userNameError_MesXPath)).getText()).toContain(errormessage)
+        await expect(this.actionSupport.getElementText(this.userNameError_MesXPath)).toContain(errormessage)
     }
 
     async LoginWithoutPassword(errormessage: string){
         console.log("Passowrd error message: " + errormessage)
-        await expect(browser.element(by.xpath(this.passWordError_MesXPath)).getText()).toContain(errormessage)
+        await expect(this.actionSupport.getElementText(this.passWordError_MesXPath)).toContain(errormessage)
     }
     
     async LoginWithUnexistedUser(alerttext: string){

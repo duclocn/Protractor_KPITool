@@ -137,25 +137,12 @@ export class Reports{
         return curweek
     }
 
-    ClickStatusBtn(KPIname: string) {
-        let cur = browser.element(by.xpath("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[4]//button[@ng-click='changeChooseKPIStatus(weekReport, kpi, $event)']"))
-        let prev = browser.element(by.xpath("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[3]//button[@ng-click='changeChooseKPIStatus(weekReport, kpi, $event)']"))
-        
-        let statusKPI = {
-            curVal: cur,
-            prevVal: prev
-        }
-        return statusKPI;
+    async ClickStatusBtnNew(KPIname: string) {
+        await this.actionSupport.clickOnElement("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[4]//button[@ng-click='changeChooseKPIStatus(weekReport, kpi, $event)']")
     }
 
-    ClickCommentBtn(KPIname: string) {
-        let cur = browser.element(by.xpath("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[4]//button[@ng-click='addNewIssue(weekReport,kpi)']"))
-        let prev = browser.element(by.xpath("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[3]//button[@ng-click='addNewIssue(weekReport,kpi)']"))
-        let commentKPI = {
-            curVal: cur,
-            prevVal: prev
-        }
-        return commentKPI;
+    async ClickCommentBtnNew(KPIname: string) {
+        await this.actionSupport.clickOnElement("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[4]//button[@ng-click='addNewIssue(weekReport,kpi)']")
     }
 
     async SelectRedStatus(){
