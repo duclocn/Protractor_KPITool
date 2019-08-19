@@ -1,5 +1,4 @@
-import { ProtractorBrowser, protractor, by, ExpectedConditions, browser, until, element, ElementArrayFinder } from "protractor";
-import {async} from "q";
+import { ProtractorBrowser, by, browser, element } from "protractor";
 import {ActionSupport} from "../core_function/actionSupport/actionSupport"
 
 export class LoginLogout{
@@ -17,8 +16,10 @@ export class LoginLogout{
     othersRoleKPIXPath: string
     selectRoleDropdowXPath: string
     rolesXPath: string
+    actionSupport: ActionSupport
 
     constructor(browser: ProtractorBrowser){
+        this.actionSupport = new ActionSupport(browser)
         this.userNameXPath = "//input[@ng-model='username']"
         this.passWordXPath = "//input[@ng-model='password']"
         //this.userNameError_Mes = "//span[contains(text(),'Username is required')]"
@@ -37,18 +38,16 @@ export class LoginLogout{
     }
 
     async LoginUser(username: string, password: string){
-        let actionSupport = new ActionSupport(browser)
         console.log("input Username: " + username)
         await browser.element(by.xpath(this.userNameXPath)).sendKeys(username)
         console.log("input Password: " + password)
         await browser.element(by.xpath(this.passWordXPath)).sendKeys(password)
-        await actionSupport.clickOnElement(this.loginBtnXPath)
+        await this.actionSupport.clickOnElement(this.loginBtnXPath)
     }
 
     async VerifyProfileName(fullname: string){
-        let actionSupport = new ActionSupport(browser)
-        await actionSupport.clickOnElement(this.dropDownProfileXPath)
-        let fn = actionSupport.getElementText(this.fullNameXPath)
+        await this.actionSupport.clickOnElement(this.dropDownProfileXPath)
+        let fn = this.actionSupport.getElementText(this.fullNameXPath)
         await expect(fn).toContain(fullname)
         console.log("Full name is: " + fullname)
     }
@@ -64,20 +63,18 @@ export class LoginLogout{
     }
     
     async LoginWithUnexistedUser(alerttext: string){
-        let actionSupport = new ActionSupport(browser)
-        let alertText = await actionSupport.getAlertObject()
+        let alertText = await this.actionSupport.getAlertObject()
         await expect(alertText.getText()).toContain(alerttext)
         console.log("Un-exsit user inputted. Get the error message: " + alerttext)
     }
 
     async VerifyKPITabelName(role: string){
-        let actionSupport = new ActionSupport(browser)
         let KPITableName: string = ""
         //let name = "//div[contains(text(),'Project's KPI')]"
         if(role = "Project's KPI"){
-            KPITableName = await actionSupport.getElementText(this.projectKPIXPath)
+            KPITableName = await this.actionSupport.getElementText(this.projectKPIXPath)
         }else{
-            KPITableName = await actionSupport.getElementText(this.othersRoleKPIXPath)
+            KPITableName = await this.actionSupport.getElementText(this.othersRoleKPIXPath)
         }
         
         await expect(KPITableName).toContain(role.trim())
@@ -85,9 +82,7 @@ export class LoginLogout{
     }
 
     async SelectRole(nameofrole: string){
-        let actionSupport = new ActionSupport(browser)
-
-        await actionSupport.clickOnElement(this.selectRoleDropdowXPath)
+        await this.actionSupport.clickOnElement(this.selectRoleDropdowXPath)
         let roles = browser.element.all(by.xpath(this.rolesXPath))
         let roleNames = await roles.getText()
         let exist = false
@@ -101,15 +96,14 @@ export class LoginLogout{
         if(exist){
             
             let roleName = "//li[contains(text(), '"+ nameofrole +"')]"
-            await actionSupport.clickOnElement(roleName)
+            await this.actionSupport.clickOnElement(roleName)
             await browser.sleep(3000)
         }else
             console.log("The role does not exist.")
     }
 
     async Logout(){
-        let actionSupport = new ActionSupport(browser)
-        await actionSupport.clickOnElement(this.logoutBtnXPath)
+        await this.actionSupport.clickOnElement(this.logoutBtnXPath)
         await browser.sleep(2000)
         await expect(element(by.xpath(this.loginTitleXPath)).getText()).toContain("Login")
         console.log("User logout successfully")

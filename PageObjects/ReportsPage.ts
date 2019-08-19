@@ -1,7 +1,5 @@
-import { ProtractorBrowser, protractor, by, ExpectedConditions, browser, until, Key } from "protractor";
-import {async} from "q";
+import { ProtractorBrowser, by, ExpectedConditions, browser, Key } from "protractor";
 import { ActionSupport } from '../core_function/actionSupport/actionSupport';
-import { LoginLogout } from "./LoginLogoutPage";
 
 export class Reports{
     //Variables and Contructor
@@ -29,8 +27,10 @@ export class Reports{
     actionXPath: string
     checkResolvedXPath: string
     AddMewModelXPath: string
+    actionSupport: ActionSupport
     
     constructor(browser: ProtractorBrowser){
+        this.actionSupport = new ActionSupport(browser)
         this.dropDownProfile = "//span[@ng-click='clickToShowSelectRole()']"
         this.startWeekXPath = "//input[@ng-model='dateWeekNumber.startDate']"
         this.endWeekXPath = "//input[@ng-model='dateWeekNumber.endDate']"
@@ -60,8 +60,6 @@ export class Reports{
     }
 
     async SelectProject(projectname: string){
-        let actionSupport = new ActionSupport(browser)
-
         let projects = browser.element.all(by.xpath(this.projectXPath))
         let listOfProjectsName = await projects.getText()
         let exist = false;
@@ -76,7 +74,7 @@ export class Reports{
         {
             console.log("The project is: " + projectname)
             let projectName = "//span[contains(text(),'"+ projectname +"')]"
-            await actionSupport.clickOnElement(projectName)
+            await this.actionSupport.clickOnElement(projectName)
             return
         }
         else
@@ -84,38 +82,29 @@ export class Reports{
     }
 
     async VerifySelectProjectSuccess(projectname: string){
-        let actionSupport = new ActionSupport(browser)
-        let currentProject = actionSupport.getElementText(this.arrowDownProjectXPath)
+        let currentProject = this.actionSupport.getElementText(this.arrowDownProjectXPath)
         await expect(currentProject).toEqual(projectname)
         console.log("Current project is: " + projectname)
         await browser.sleep(2000)
     }
 
     async ClickPreviousWeek(){
-        let actionSupport = new ActionSupport(browser)
-
-        await actionSupport.clickOnElement(this.previousButtonXPath)
+        await this.actionSupport.clickOnElement(this.previousButtonXPath)
         await browser.sleep(1000)
     }
 
     async ClickNextWeek(){
-        let actionSupport = new ActionSupport(browser)
-
-        await actionSupport.clickOnElement(this.nextButtonXPath)
+        await this.actionSupport.clickOnElement(this.nextButtonXPath)
         await browser.sleep(1000)
     }
 
     async ClickLast4Weeks(){
-        let actionSupport = new ActionSupport(browser)
-
-        await actionSupport.clickOnElement(this.lastFor4WeeksXPath)
+        await this.actionSupport.clickOnElement(this.lastFor4WeeksXPath)
         await browser.sleep(1000)
     }
 
     async ClickApplyWeek(){
-        let actionSupport = new ActionSupport(browser)
-
-        await actionSupport.clickOnElement(this.applyBtnXPath)
+        await this.actionSupport.clickOnElement(this.applyBtnXPath)
         await browser.sleep(1000)
     }
 
@@ -170,31 +159,23 @@ export class Reports{
     }
 
     async SelectRedStatus(){
-        let actionSupport = new ActionSupport(browser)
-
-        await actionSupport.clickOnElement(this.redStatusXPath)
+        await this.actionSupport.clickOnElement(this.redStatusXPath)
         await browser.sleep(1000)
     }
 
     async SelectYellowStatus(){
-        let actionSupport = new ActionSupport(browser)
-
-        await actionSupport.clickOnElement(this.yellowStatusXPath)
+        await this.actionSupport.clickOnElement(this.yellowStatusXPath)
         await browser.sleep(1000)
     }
 
     async SelectGreenStatus(){
-        let actionSupport = new ActionSupport(browser)
-
-        await actionSupport.clickOnElement(this.greenStatusXPath)
+        await this.actionSupport.clickOnElement(this.greenStatusXPath)
         await browser.sleep(1000)
     }
 
     async ClickProjectHighlightComment(prohighlight: string, content: string) {
-        let actionSupport = new ActionSupport(browser)
         let projectHighlight = "//div[text()='" + prohighlight + "']//following-sibling::div[1]//iframe"
-
-        await actionSupport.clickOnElement(projectHighlight)
+        await this.actionSupport.clickOnElement(projectHighlight)
         await browser.switchTo().frame(browser.element(by.xpath(projectHighlight)).getWebElement())
         await browser.waitForAngularEnabled(false)
         await browser.element(by.tagName('body')).sendKeys(content)
@@ -203,42 +184,36 @@ export class Reports{
     }
 
     async IssueCommentOption(option: string){
-        let actionSupport = new ActionSupport(browser)
         let opt = "//label[@for='type-"+ option +"']"
 
-        actionSupport.clickOnElement(opt)
+        this.actionSupport.clickOnElement(opt)
         await browser.sleep(1000)
     }
 
     async AddNewComment(){
-        let actionSupport = new ActionSupport(browser)
-
         await this.IssueCommentOption("comment")
-        await actionSupport.sendKeysOnElement(this.titleXPath,"Comment Title")
+        await this.actionSupport.sendKeysOnElement(this.titleXPath,"Comment Title")
         await browser.sleep(1000)
-        await actionSupport.sendKeysOnElement(this.descriptionXPath,"Comment Description")
+        await this.actionSupport.sendKeysOnElement(this.descriptionXPath,"Comment Description")
         await browser.sleep(1000)
     }
 
     async AddNewIssueWithoutResolved(title: string, description: string, action: string){
-        let actionSupport = new ActionSupport(browser)
-
         await this.IssueCommentOption("issue")
-        await actionSupport.sendKeysOnElement(this.titleXPath, title)
+        await this.actionSupport.sendKeysOnElement(this.titleXPath, title)
         await browser.sleep(1000)
-        await actionSupport.sendKeysOnElement(this.descriptionXPath, description)
+        await this.actionSupport.sendKeysOnElement(this.descriptionXPath, description)
         await browser.sleep(1000)
-        await actionSupport.sendKeysOnElement(this.actionXPath, action)
+        await this.actionSupport.sendKeysOnElement(this.actionXPath, action)
         await browser.sleep(1000)
     }
 
     async ActionAddIssueCommentModal(type: string, action: string){
-        let actionSupport = new ActionSupport(browser)
         let act = "//button[contains(text(), '"+ action +"')]"
         let addSuccess_msg = "//span[contains(text(),'Added the " + type + " successfully')]"
         let message = await browser.element(by.xpath(addSuccess_msg))
 
-        await actionSupport.clickOnElement(act)
+        await this.actionSupport.clickOnElement(act)
         await expect(browser.wait(ExpectedConditions.invisibilityOf(message), 10000, message.locator())).toBe(true)
         await expect(browser.element(by.xpath(this.AddMewModelXPath)).isPresent()).toBe(false)
         await browser.sleep(1000)

@@ -18,7 +18,6 @@ export class ActionSupport{
         await this.curBrowser.wait(this.until.presenceOf(ele),timeout, 'Element ' + xpath +' takes too long to appear in the DOM')
         await this.curBrowser.wait(this.until.elementToBeClickable(ele), this.timeOut, 'Element ' + xpath +' is NOT clickable')
         await ele.click()
-
     }
 
     async sendKeysOnElement(xpath:string, data:string, timeOut=this.timeOut) {
