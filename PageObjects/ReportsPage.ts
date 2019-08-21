@@ -137,11 +137,11 @@ export class Reports{
         return curweek
     }
 
-    async ClickStatusBtnNew(KPIname: string) {
+    async ClickStatusBtn(KPIname: string) {
         await this.actionSupport.clickOnElement("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[4]//button[@ng-click='changeChooseKPIStatus(weekReport, kpi, $event)']")
     }
 
-    async ClickCommentBtnNew(KPIname: string) {
+    async ClickCommentBtn(KPIname: string) {
         await this.actionSupport.clickOnElement("//div[@class='row-item row-kpi d-flex justify-content-start align-items-center ng-scope']//div[text()='" + KPIname + "']//following-sibling::div[4]//button[@ng-click='addNewIssue(weekReport,kpi)']")
     }
 

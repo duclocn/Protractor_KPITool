@@ -1,10 +1,10 @@
-import { Workbook } from "exceljs";
+import { Workbook, Row, Cell } from "exceljs";
 
 export class dataBuilder {
 
     static async readExcel(filePath:string, sheet:string, testcaseID:string): Promise<Array<Map<string, string>>>{
         // create object for workbook
-        let wb = new Workbook();
+        let wb:Workbook = new Workbook();
         let dataArr: Array<Map<string,string>> = [];
 
         //read file excel
